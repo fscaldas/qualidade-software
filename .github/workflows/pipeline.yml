@@ -1,0 +1,40 @@
+name: CI Pipeline for JavaScript
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout do repositório
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 2. Configurar Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Versão do Node.js usada no projeto
+
+      # 3. Instalar dependências
+      - name: Install Dependencies
+        run: npm install
+
+      # 4. Rodar ESLint para análise de qualidade de código
+      - name: Run ESLint
+        run: npm run lint
+
+      # 5. Rodar testes com Jest (ou outra ferramenta de testes)
+      - name: Run Tests
+        run: npm test
+
+      # 6. (Opcional) Verificar vulnerabilidades nas dependências
+      - name: Run npm audit
+        run: npm audit --audit-level=high
